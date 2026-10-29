@@ -17,7 +17,7 @@ def init_db():
         db_data = {}
         for i, username in enumerate(DEFAULT_USERS):
             db_data[username] = {
-                "password": username,
+                "password": str(username),
                 "is_complex": True, 
                 "is_admin": (i == 0)  # адмін - перший користувач з DEFAULT_USERS
             }
