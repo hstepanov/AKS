@@ -1,0 +1,2 @@
+this is doc3
+new text
