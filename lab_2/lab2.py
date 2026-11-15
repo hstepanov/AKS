@@ -4,7 +4,6 @@ import re
 import shutil
 import string
 import subprocess
-import sys
 import tkinter as tk
 from tkinter import messagebox, ttk
 
@@ -317,17 +316,6 @@ def test_new_entities(db, labels) -> list: # Мітки для нових кор
     return results
 
 
-# def run_all_tests() -> list:
-#     db = load_db()
-#     labels = sync_resources(load_labels())
-#     results = (test_policy_matrix(db, labels)
-#                + test_real_operations(db, labels)
-#                + test_new_entities(db, labels))
-#     failed = sum(r.startswith("[FAIL]") for r in results)
-#     results.append(f"\nУсього: {len(results)}, FAIL: {failed}")
-#     return results
-
-
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -426,7 +414,6 @@ class App(tk.Tk):
 
             # Керування мітками та перевірка правил доступу лише для адміна
             ttk.Button(frame, text="Мандатні мітки", command=self.open_labels_dialog, width=30).pack(pady=5)
-            ttk.Button(frame, text="Перевірити правила", command=self.show_test_results, width=30).pack(pady=5)
 
         ttk.Button(frame, text="Ресурси", command=self.open_resources_dialog, width=30).pack(pady=5)
 
@@ -659,30 +646,8 @@ class App(tk.Tk):
 
         ttk.Button(dialog, text="Зберегти мітку", command=apply_resource).pack(pady=5)
 
-    # Результати перевірки правил доступу (адмін)
-    def show_test_results(self):
-        self.db = load_db()  # тести працюють з актуальною БД
-        results = run_all_tests()
-
-        dialog = tk.Toplevel(self)
-        dialog.title("Перевірка правил")
-        dialog.geometry("640x420")
-
-        text = tk.Text(dialog, wrap="none")
-        text.insert("1.0", "\n".join(results))
-        text.config(state="disabled")
-        text.pack(fill="both", expand=True, padx=10, pady=10)
-
 
 if __name__ == "__main__":
-    # python3 lab2.py --setup —-> налаштування правил MAC
-    # python3 lab2.py --test  —-> перевірка правил MAC
-    # if "--setup" in sys.argv:
-    #     setup_mandatory_policy()
-    #     print("Політику мандатного доступу налаштовано")
-    # elif "--test" in sys.argv:
-    #     print("\n".join(run_all_tests()))
-    # else:
     load_labels()  # при першому запуску налаштовує політику
     app = App()
     app.mainloop()
